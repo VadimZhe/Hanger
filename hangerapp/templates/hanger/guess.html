@@ -1,16 +1,53 @@
 {% load static %}
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <h1>
-            <div id="status_msg">{{ the_word.status_message }}</div>
-            <br><br>
-            <div id="hint"><font face="Courier New">{{ the_word.hint }}</font></div>
-            <br><br>
-        </h1>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="{% static "js/hanger.js" %}"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('[data-toggle="popover"]').popover();
+            });
+        </script>
+        <style>
+	        .hint{
+	            letter-spacing: 7px;
+	            font face="Courier New";
+	        }
+	    </style>
     </head>
     <body onload="DrawHanger({{ the_word.attempts_left }});">
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Hanger</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li><a href="#"><span id="reset">Reset game</span></a></li>
+                <li><a href="#">Show answer</a></li>
+                <li><a href="#" data-toggle="popover" data-trigger="focus"
+                       data-content="Not implemented yet">Russian</a>
+              </ul>
+              <!--ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              </ul-->
+            </div>
+          </div>
+        </nav>
+        <div class="container-fluid bg-3 text-center">
+            <h1><div id="status_msg">{{ the_word.status_message }}</div><br><br>
+                <div class="hint" id="hint">{{ the_word.hint }}</div></h1>
+            <!--div class="row">
+                <div class="col-sm-6">
+                    <p>Some text..</p-->
+        </div>
         <table>
             <tr>
                 <td>
