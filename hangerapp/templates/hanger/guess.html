@@ -1,0 +1,35 @@
+{% load static %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <h1>
+            <div id="status_msg">{{ the_word.status_message }}</div>
+            <br><br>
+            <div id="hint"><font face="Courier New">{{ the_word.hint }}</font></div>
+            <br><br>
+        </h1>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="{% static "js/hanger.js" %}"></script>
+    </head>
+    <body onload="DrawHanger({{ the_word.attempts_left }});">
+        <table>
+            <tr>
+                <td>
+                    <input type = "submit" id = "reset" value = "Restart" />
+                    <br><br>
+                    Used letters: <span id="used_ltrs"> {{ the_word.used_letters }} </span>
+                    <br><br>
+                    Wrong attempts left: <span id="wrong_attempts" title="Click to see the answer"> {{ the_word.attempts_left }} </span>
+                    {% if debug %}
+                        <br><br>
+                        <font color="#C0C0C0"><span id="debug_txt"></span></font>
+                        <br><br>
+                    {% endif %}
+                </td>
+                <td>
+                    <canvas id="Canvas1" width="100" height="200">Ваш браузер не поддерживает HTML5 canvas, стыдитесь</canvas>
+                </td>
+            </tr>
+        </table>
+        <script src="{% static "js/hanger-ajax.js" %}"></script>
+    </body>
+</html>
