@@ -1,12 +1,25 @@
 from django.db import models
 
+class Languages(models.Model):
+    code = models.CharField(max_length=3)
+    full_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.full_name
 
 class Words(models.Model):
     word = models.CharField(max_length=50)
+    language = models.ForeignKey('Languages', on_delete=models.PROTECT, null=False)
 
     def __str__(self):
-        return self.word
+        return self.word + '(' + str(self.language) + ')'
 
+class InterfaceMessages(models.Model):
+    language = models.ForeignKey('Languages', on_delete=models.PROTECT)
+    status_announcement = models.CharField(max_length=200, null=False)
+
+    def __str__(self):
+        return str(self.language) + ':' + self.status_announcement + '...'
 
 class Hangers:
     max_wrong_attempts = 10
@@ -19,18 +32,21 @@ class Hangers:
             self.used_letters = request.session['used']
             self.wrong_attempts = request.session['failures']
             self.status_message = '-'
+            self.language = 'rus'
         else:
             self.secret_word = word
             self.hint = "_" * len(self.secret_word)
             self.used_letters = ''
             self.wrong_attempts = 0
             self.status_message = 'Guess a letter'
+            self.language = 'eng'
 
     def save_to_cookies(self):
         self.request.session['word'] = self.secret_word
         self.request.session['hint'] = self.hint
         self.request.session['used'] = self.used_letters
         self.request.session['failures'] = self.wrong_attempts
+        self.request.session['language'] = self.language
 
     def check_letter(self, letter):
         letter = letter[0].upper()
@@ -79,20 +95,4 @@ class Hangers:
     # def __str__(self):
     #    return self.secret_word + ' (' + '_'*len(self.secret_word)+ ')' #guessed
 
-    def guess(self, new_letter):
-        if self.lost() or self.solved():
-            self.status_message = 'Just click "Restart", OK?'
-        elif not new_letter.isalpha():
-            self.status_message = 'You typed "' + new_letter + '". Type a letter, please'
-        elif self.letter_used(new_letter[0].upper()):
-            self.status_message = '"' + new_letter[0].upper() + '" has already been used'
-        else:
-            self.status_message = 'You entered "' + new_letter[0].upper() + '"'
-            if self.check_letter(new_letter):
-                self.status_message += ' and hit!'
-                if self.solved():
-                    self.status_message += ' You won! Click Restart'
-            else:
-                self.status_message += ' and missed.'
-                if self.lost():
-                    self.status_message += ' You lost! The word was "' + self.secret_word + '". Click Restart'
+    #def guess(self, new_letter):
