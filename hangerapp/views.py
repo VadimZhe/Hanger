@@ -50,12 +50,14 @@ def make_a_guess_sync(request):
         hanger = initial_view(request)
     else:
         hanger = make_a_guess(request, new_letter)
+    languages = Languages.objects.all()
     return render(request, 'hanger/guess.html', {
         'the_word': hanger,
         'debug': debug,
         'percentage_left': 100,
         'percentage_used' : 0,
-        'language' : 'eng'
+        'language' : hanger.language.code,
+        'all_languages' : languages
     })
 
 

@@ -19,7 +19,7 @@ class InterfaceMessages(models.Model):
     status_announcement = models.CharField(max_length=200, null=False)
 
     def __str__(self):
-        return str(self.language) + ':' + self.status_announcement + '...'
+        return self.status_announcement
 
 class Hangers:
     max_wrong_attempts = 10
@@ -32,21 +32,21 @@ class Hangers:
             self.used_letters = request.session['used']
             self.wrong_attempts = request.session['failures']
             self.status_message = '-'
-            self.language = 'rus'
+            self.language = Languages.objects.get(code=request.session['language'])
         else:
             self.secret_word = word
             self.hint = "_" * len(self.secret_word)
             self.used_letters = ''
             self.wrong_attempts = 0
-            self.status_message = 'Guess a letter'
-            self.language = 'eng'
+            self.status_message = '--?'
+            self.language = Languages.objects.get(pk=1)
 
     def save_to_cookies(self):
         self.request.session['word'] = self.secret_word
         self.request.session['hint'] = self.hint
         self.request.session['used'] = self.used_letters
         self.request.session['failures'] = self.wrong_attempts
-        self.request.session['language'] = self.language
+        self.request.session['language'] = self.language.code
 
     def check_letter(self, letter):
         letter = letter[0].upper()

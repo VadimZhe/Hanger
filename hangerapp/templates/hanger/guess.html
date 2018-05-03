@@ -40,7 +40,14 @@
               <ul class="nav navbar-nav">
                 <li><a href="#"><span id="reset">{% if language == "rus" %}Сброс игры{% else %}Reset game{% endif %}</span></a></li>
                 <li><a href="#" id="show_answer">{% if language == "rus" %}Показать ответ{% else %}Show answer{% endif %}</a></li>
-                <!--li><a href="#" id="change_language">{% if language == "rus" %}English{% else %}Russian{% endif %}</a-->
+                <!--li><a href="#" id="change_language"><span class="glyphicon glyphicon-globe"></span> {% if language == "rus" %}English{% else %}Russian{% endif %}</a></li-->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-globe"></span> Languages<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">English</a></li>
+                        <li><a href="#">Русский</a></li>
+                    </ul>
+                </li>
               </ul>
               <!--ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

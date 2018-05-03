@@ -21,16 +21,15 @@ $(document).keypress(function(e) {
    check_letter(String.fromCharCode(e.which));
 });
 
-$('#change_language').click(function(){
-    $.get('/language', 0, function(data){
-        $('#status_msg').html(data['message']);
-    });
-});
+//$('#change_language').click(function(){
+//    $.get('/language', 0, function(data){
+//        $('#status_msg').html(data['message']);
+//    });
+//});
 
 $('.alpha').click(function(){
    //console.log($(this).attr('id').substring(7,8));
    check_letter($(this).attr('id').substring(7,8));
-   $(this).html('&nbsp;');
 });
 
 function check_letter(letter){
@@ -48,5 +47,6 @@ function check_letter(letter){
        $('#wrong_attempts').html(wrong_num)
        updateProgressBar(wrong_num)
        DrawHanger(wrong_num, "black", false)
+       $('#letter_' + letter.toUpperCase()).html('&nbsp;');
    });
 }
