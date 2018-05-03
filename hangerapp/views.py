@@ -20,10 +20,10 @@ def make_a_guess(request, new_letter):
     if (new_letter == 'reset'):  # or(not isinstance(secret_word, TheWord)):
         return initial_view(request)
     hanger = Hangers(request)
-    current_interface = InterfaceMessages.objects.filter(language=hanger.language)
+    #current_interface = InterfaceMessages.objects.filter(language=hanger.language)
     #hanger.guess(new_letter)
     if hanger.lost() or hanger.solved():
-        hanger.status_message = 'Just click "Restart", OK?'
+        hanger.status_message = 'Just click <a onClick="window.location.reload()">Reset game</a>, OK?'
     elif not new_letter.isalpha():
         hanger.status_message = 'You typed "' + new_letter + '". Type a letter, please'
     elif hanger.letter_used(new_letter[0].upper()):
@@ -55,7 +55,7 @@ def make_a_guess_sync(request):
         'debug': debug,
         'percentage_left': 100,
         'percentage_used' : 0,
-        'language' : 'rus'
+        'language' : 'eng'
     })
 
 

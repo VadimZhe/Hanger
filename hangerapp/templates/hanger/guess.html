@@ -17,6 +17,11 @@
 	        }
 	        .grayed{
 	            background-color: #f2f2f2;
+	            border: #FFFFFF medium solid;
+	        }
+	        .keybrd{
+	            border: #FFFFFF medium solid;
+	            background-color: #e3e3e3";
 	        }
 	    </style>
     </head>
@@ -35,7 +40,7 @@
               <ul class="nav navbar-nav">
                 <li><a href="#"><span id="reset">{% if language == "rus" %}Сброс игры{% else %}Reset game{% endif %}</span></a></li>
                 <li><a href="#" id="show_answer">{% if language == "rus" %}Показать ответ{% else %}Show answer{% endif %}</a></li>
-                <li><a href="#" id="change_language">{% if language == "rus" %}English{% else %}Russian{% endif %}</a>
+                <!--li><a href="#" id="change_language">{% if language == "rus" %}English{% else %}Russian{% endif %}</a-->
               </ul>
               <!--ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -43,7 +48,7 @@
             </div>
           </div>
         </nav>
-        <div class="container-fluid text-center">
+        <div class="container text-center align-middle">
             <h1><div id="status_msg">{{ the_word.status_message }}</div><br>
                 <div class="hint" id="hint">{{the_word.hint}}</div></h1><br>
             <div class="row">
@@ -69,6 +74,37 @@
                     </div>
                 </div>
                 <div class="col-sm-3 hidden-xs"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
+                {% for ch in "QWERTYUIOP" %}
+                <div class="col-xs-1 alpha visible-xs-block visible-sm-block grayed" id="letter_{{ch}}">
+                    <a href="#">{{ch}}</a>
+                </div>
+                {% endfor %}
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
+                {% for ch in "ASDFGHJKL" %}
+                <div class="col-xs-1 alpha visible-xs-block visible-sm-block grayed" id="letter_{{ch}}">
+                    <a href="#">{{ch}}</a>
+                </div>
+                {% endfor %}
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
+                {% for ch in "ZXCVBNM" %}
+                <div class="col-xs-1 alpha visible-xs-block visible-sm-block grayed" id="letter_{{ch}}">
+                    <a href="#">{{ch}}</a>
+                </div>
+                {% endfor %}
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
+                <div class="col-xs-1 visible-xs-block visible-sm-block"></div>
             </div>
         </div>
         {% if debug %}

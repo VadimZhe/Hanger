@@ -18,8 +18,24 @@ $('#show_answer').click(function(){
 });
 
 $(document).keypress(function(e) {
+   check_letter(String.fromCharCode(e.which));
+});
+
+$('#change_language').click(function(){
+    $.get('/language', 0, function(data){
+        $('#status_msg').html(data['message']);
+    });
+});
+
+$('.alpha').click(function(){
+   //console.log($(this).attr('id').substring(7,8));
+   check_letter($(this).attr('id').substring(7,8));
+   $(this).html('&nbsp;');
+});
+
+function check_letter(letter){
   //alert( "Handler for .keydown() called." );
-   letter = String.fromCharCode(e.which)
+   if($('#hint').text().indexOf('_') ==  -1) return;
    //console.log(letter)
    $.get('/async', {guess_letter: letter}, function(data){
        $('#status_msg').html(data['message']);
@@ -33,10 +49,4 @@ $(document).keypress(function(e) {
        updateProgressBar(wrong_num)
        DrawHanger(wrong_num, "black", false)
    });
-});
-
-$('#change_language').click(function(){
-    $.get('/language', 0, function(data){
-        $('#status_msg').html(data['message']);
-    });
-});
+}
