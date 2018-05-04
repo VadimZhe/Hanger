@@ -7,4 +7,5 @@ urlpatterns = [
 	url(r'^$', views.make_a_guess_sync, name='initial'),
 	url(r'^async/', views.make_a_guess_async, name='async'),
 	url(r'^asyncret/', views.get_secret, name='secret'),
+	url(r'^language/', views.change_language, name='language'),
 ]

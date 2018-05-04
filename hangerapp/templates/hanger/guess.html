@@ -34,44 +34,44 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">{% if language == "rus" %}Виселица{% else %}Hanger{% endif %}</a>
+              <a class="navbar-brand" id="game_name" href="#">{{interface_messages.game_name}}</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
               <ul class="nav navbar-nav">
-                <li><a href="#"><span id="reset">{% if language == "rus" %}Сброс игры{% else %}Reset game{% endif %}</span></a></li>
-                <li><a href="#" id="show_answer">{% if language == "rus" %}Показать ответ{% else %}Show answer{% endif %}</a></li>
-                <!--li><a href="#" id="change_language"><span class="glyphicon glyphicon-globe"></span> {% if language == "rus" %}English{% else %}Russian{% endif %}</a></li-->
+                <li><a href="#" id="reset">{{interface_messages.reset_game_prompt}}</a></li>
+                <li><a href="#" id="show_answer">{{interface_messages.show_answer_prompt}}</a></li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-globe"></span> Languages<span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-globe"></span> <span id="languages_word"> {{interface_messages.languages_word}}</span><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">English</a></li>
-                        <li><a href="#">Русский</a></li>
+                        {% for lang in all_languages %}
+                            <li><a class="change_language" id="{{lang.code}}" href="#">{{lang.full_name}}</a></li>
+                        {% endfor %}
                     </ul>
                 </li>
               </ul>
-              <!--ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-              </ul-->
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="/admin/"><span class="glyphicon glyphicon-lock"></span> Setup</a></li>
+              </ul>
             </div>
           </div>
         </nav>
         <div class="container text-center align-middle">
-            <h1><div id="status_msg">{{ the_word.status_message }}</div><br>
+            <h1><div id="status_announcement">{{ interface_messages.status_announcement }}</div><br>
                 <div class="hint" id="hint">{{the_word.hint}}</div></h1><br>
             <div class="row">
                 <div class="col-sm-3 hidden-xs"></div>
                 <div class="col-sm-4">
-                    <h3>{% if language == "rus" %}Использованные буквы{% else %}Used letters{% endif %}: <span id="used_ltrs">{{the_word.used_letters}}</span></h3>
+                    <h3><span id="used_letters_label">{{interface_messages.used_letters_label}}</span>: <span id="used_ltrs">{{the_word.used_letters}}</span></h3>
                 </div>
                 <div class="col-sm-2 grayed">
-                    <canvas id="Canvas1" width="100" height="200">{% if language == "rus" %}Ваш браузер не поддерживает HTML5 canvas, стыдитесь{% else %}Your browser doesn't support HTML5 canvas, it's a shame{% endif %}</canvas>
+                    <canvas id="Canvas1" width="100" height="200">Your browser doesn't support HTML5 canvas, it's a shame</canvas>
                 </div>
                 <div class="col-sm-3 hidden-xs"></div>
             </div>
             <div class="row">
                 <div class="col-sm-3 hidden-xs"></div>
                 <div class="col-sm-4">
-                    <h3>{% if language == "rus" %}Осталось попыток{% else %}Attempts left{% endif %}: <span id="wrong_attempts" title="Click to see the answer">{{the_word.attempts_left}}</span></h3>
+                    <h3><span id="attempts_left_label">{{interface_messages.attempts_left_label}}</span>: <span id="wrong_attempts">{{the_word.attempts_left}}</span></h3>
                 </div>
                 <div class="col-sm-2">
                     <br>

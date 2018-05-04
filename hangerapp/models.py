@@ -9,37 +9,56 @@ class Languages(models.Model):
 
 class Words(models.Model):
     word = models.CharField(max_length=50)
-    language = models.ForeignKey('Languages', on_delete=models.PROTECT, null=False)
+    #language = models.ForeignKey('Languages', on_delete=models.PROTECT, null=True)
 
     def __str__(self):
-        return self.word + '(' + str(self.language) + ')'
+        return self.word# + '(' + str(self.language) + ')'
 
 class InterfaceMessages(models.Model):
     language = models.ForeignKey('Languages', on_delete=models.PROTECT)
-    status_announcement = models.CharField(max_length=200, null=False)
+    status_announcement = models.CharField(max_length=200, null=True)
+    game_name = models.CharField(max_length=20, null=True)
+    reset_game_prompt = models.CharField(max_length=50, null=True)
+    show_answer_prompt = models.CharField(max_length=50, null=True)
+    languages_word = models.CharField(max_length=20, null=True)
+    used_letters_label = models.CharField(max_length=50, null=True)
+    attempts_left_label = models.CharField(max_length=50, null=True)
+    just_click_reset_message = models.CharField(max_length=100, null=True)
+    type_a_letter_message = models.CharField(max_length=100, null=True)
+    letter_already_used_message = models.CharField(max_length=100, null=True)
+    you_entered_message = models.CharField(max_length=50, null=True)
+    and_hit_message = models.CharField(max_length=20, null=True)
+    and_missed_message = models.CharField(max_length=20, null=True)
+    you_won_message = models.CharField(max_length=100, null=True)
+    you_lost_message = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.status_announcement
+        return self.language.full_name + ': ' + self.status_announcement + '...'
 
 class Hangers:
     max_wrong_attempts = 10
 
-    def __init__(self, request, word=''):
+    def __init__(self, request, word='', language=0):
         self.request = request
         if word == '':
             self.secret_word = request.session['word']
             self.hint = request.session['hint']
             self.used_letters = request.session['used']
             self.wrong_attempts = request.session['failures']
-            self.status_message = '-'
+            #self.status_message = '?--'
             self.language = Languages.objects.get(code=request.session['language'])
         else:
             self.secret_word = word
             self.hint = "_" * len(self.secret_word)
             self.used_letters = ''
             self.wrong_attempts = 0
-            self.status_message = '--?'
-            self.language = Languages.objects.get(pk=1)
+            #self.status_message = '--?'
+            if language==0:
+                self.language = Languages.objects.get(pk=1)
+            else:
+                self.language = language
+        current_interface = InterfaceMessages.objects.get(language=self.language)
+        self.status_message = current_interface.status_announcement
 
     def save_to_cookies(self):
         self.request.session['word'] = self.secret_word
@@ -91,6 +110,10 @@ class Hangers:
 
     def get_answer(self):
         return self.secret_word
+
+    def set_language(self, new_language_code):
+        self.language = Languages.objects.get(code=new_language_code)
+        self.save_to_cookies()
 
     # def __str__(self):
     #    return self.secret_word + ' (' + '_'*len(self.secret_word)+ ')' #guessed
