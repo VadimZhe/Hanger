@@ -1,3 +1,4 @@
+// Draw the hanger himself
 function DrawHanger(stage, drawcolor = "#C0C0C0", initialclean = false) {
     cnv = document.getElementById("Canvas1");
     ctx = cnv.getContext("2d");

@@ -1,3 +1,4 @@
+// Reset the game while keeping the current language
 $('#reset').click(function(){
     $.get('/async', {guess_letter: 'reset'}, function(data){
         $('#status_announcement').html(data['message'])
@@ -12,13 +13,15 @@ $('#reset').click(function(){
     });
 });
 
+// Redraw on-screen keyboard (usually while resetting the game)
 function reset_keyboard(){
     for(ch = 'A'.charCodeAt(0); ch <= 'Z'.charCodeAt(0); ch++){
-        console.log(String.fromCharCode(ch));
+        //console.log(String.fromCharCode(ch));
         $('#letter_'+String.fromCharCode(ch)).html('<a href="#">' + String.fromCharCode(ch) + '</a>');
     }
 }
 
+// Request the secret word and show it on screen
 $('#show_answer').click(function(){
    $.get('/asyncret', 0, function(data){
         $('#debug_txt').html(data['secret']);
@@ -30,6 +33,7 @@ $(document).keypress(function(e) {
    //console.log('back')
 });
 
+// Translate all interface items to other language by requesting the back-end
 $('.change_language').click(function(){
     $.get('/language', {'new_language_code': $(this).attr('id')}, function(data){
         $('#game_name').html(data['game_name']);
@@ -42,11 +46,13 @@ $('.change_language').click(function(){
     });
 });
 
+// Click (tap) the on-screen keyboard
 $('.alpha').click(function(){
    //console.log($(this).attr('id').substring(7,8));
    check_letter($(this).attr('id').substring(7,8));
 });
 
+// Ask the back-end if the letter guessed is good
 function check_letter(letter){
   //alert( "Handler for .keydown() called." );
    //if($('#hint').text().indexOf('_') ==  -1) return;

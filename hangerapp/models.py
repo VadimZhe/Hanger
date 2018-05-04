@@ -1,6 +1,7 @@
 from django.db import models
 
 class Languages(models.Model):
+    """Codes and full names of the languages used in the game interface."""
     code = models.CharField(max_length=3)
     full_name = models.CharField(max_length=50)
 
@@ -8,6 +9,7 @@ class Languages(models.Model):
         return self.full_name
 
 class Words(models.Model):
+    """Words the games has to guess. Always in English, regardless of the interface."""
     word = models.CharField(max_length=50)
     #language = models.ForeignKey('Languages', on_delete=models.PROTECT, null=True)
 
@@ -15,6 +17,7 @@ class Words(models.Model):
         return self.word# + '(' + str(self.language) + ')'
 
 class InterfaceMessages(models.Model):
+    """Words and centences of the interface. In each language separately"""
     language = models.ForeignKey('Languages', on_delete=models.PROTECT)
     status_announcement = models.CharField(max_length=200, null=True)
     game_name = models.CharField(max_length=20, null=True)
@@ -36,6 +39,10 @@ class InterfaceMessages(models.Model):
         return self.language.full_name + ': ' + self.status_announcement + '...'
 
 class Hangers:
+    """ The Hanger game itself
+        When created with the word specified, contains other default values.
+        When created without the word, tries to get the content from cookies.
+    """
     max_wrong_attempts = 10
 
     def __init__(self, request, word='', language=0):
@@ -68,6 +75,9 @@ class Hangers:
         self.request.session['language'] = self.language.code
 
     def check_letter(self, letter):
+        """ Does the word contain the letter guessed ?
+            return boolean
+        """
         letter = letter[0].upper()
         self.add_used(letter)
         retvalue = letter in self.secret_word.upper()
@@ -114,8 +124,3 @@ class Hangers:
     def set_language(self, new_language_code):
         self.language = Languages.objects.get(code=new_language_code)
         self.save_to_cookies()
-
-    # def __str__(self):
-    #    return self.secret_word + ' (' + '_'*len(self.secret_word)+ ')' #guessed
-
-    #def guess(self, new_letter):

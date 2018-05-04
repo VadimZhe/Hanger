@@ -8,6 +8,7 @@ from .models import Words, Hangers, InterfaceMessages, Languages
 debug = True
 
 def initial_view(request, language=0):
+    """Return new ""empty"" hanger with all defaults, saved to cookies"""
     #global debug
     secret_word = Words.objects.get(pk=random.randint(1, Words.objects.count()))
     hanger = Hangers(request, secret_word.word, language)
@@ -17,6 +18,7 @@ def initial_view(request, language=0):
 
 
 def make_a_guess(request, new_letter):
+    """Check the letter guessed, set the status message"""
     hanger = Hangers(request)
     if (new_letter == 'reset'):  # or(not isinstance(secret_word, TheWord)):
         return initial_view(request, hanger.language)
@@ -43,6 +45,9 @@ def make_a_guess(request, new_letter):
 
 
 def make_a_guess_sync(request):
+    """Obsolete, used for syncronous guessing (with page reload)
+        Return the rendered page after the guessing
+    """
     global debug
     new_letter = request.GET.get('guess_letter', '')  # [0].upper()
     if new_letter == '':
@@ -62,6 +67,7 @@ def make_a_guess_sync(request):
 
 
 def make_a_guess_async(request):
+    """Check the letter guessed and return JSON array with all the messages that should be changed on the page"""
     new_letter = False
     if request.method == 'GET':
         new_letter = request.GET['guess_letter']
@@ -78,10 +84,12 @@ def make_a_guess_async(request):
 
 
 def get_secret(request):
+    """Return current secret word in JSON array. For testing/cheating"""
     hanger = Hangers(request)
     return JsonResponse({'secret': hanger.secret_word})
 
 def change_language(request):
+    """Set the language of the interface without restarting the game"""
     new_language_code = request.GET['new_language_code']
     hanger = Hangers(request)
     hanger.set_language(new_language_code)
