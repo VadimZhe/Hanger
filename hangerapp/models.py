@@ -9,15 +9,20 @@ class Languages(models.Model):
         return self.full_name
 
 class Words(models.Model):
-    """Words the games has to guess. Always in English, regardless of the interface."""
+    """Words the gamer has to guess. Always in English, regardless of the interface."""
     word = models.CharField(max_length=50)
     #language = models.ForeignKey('Languages', on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.word# + '(' + str(self.language) + ')'
 
+    class Meta:
+        verbose_name = 'Word'
+        verbose_name_plural = 'Words'
+
+
 class InterfaceMessages(models.Model):
-    """Words and centences of the interface. In each language separately"""
+    """Words and sentences of the interface. In each language separately"""
     language = models.ForeignKey('Languages', on_delete=models.PROTECT)
     status_announcement = models.CharField(max_length=200, null=True)
     game_name = models.CharField(max_length=20, null=True)
@@ -37,6 +42,11 @@ class InterfaceMessages(models.Model):
 
     def __str__(self):
         return self.language.full_name + ': ' + self.status_announcement + '...'
+
+    class Meta:
+        verbose_name = 'Interface message'
+        verbose_name_plural = 'Interface messages'
+
 
 class Hangers:
     """ The Hanger game itself
